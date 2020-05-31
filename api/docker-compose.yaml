@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: univ_pr
+      POSTGRES_PASSWORD: univ_pr
+      POSTGRES_DATABASE: univ_pr
+      POSTGRES_ROOT_PASSWORD: univ_pr
+      pgdata: data-pstgresql
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./posgresql:/docker-entrypoint-initdb.d
+
+  web:
+    restart: always
+    environment:
+      POSGRESQL-HOSTNAME: db
+    container_name: api
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
